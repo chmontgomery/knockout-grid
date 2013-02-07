@@ -1,16 +1,14 @@
-﻿/// <reference path="../ActiveManagement/IViewHandle.d.ts" />
-/// <reference path="../Plugins/knockout-ondemand-observable.ts" />
-/// <reference path="../../_Definitions/_allRefs.d.ts" />
+﻿/// <reference path="../Plugins/knockout-ondemand-observable.ts" />
+/// <reference path="../_Definitions/_allRefs.d.ts" />
 /// <reference path="Column.ts" />
 /// <reference path="../Shared/Argument.ts" />
 /// <reference path="SelectableItem.ts" />
 /// <reference path="SelectableStates.ts" />
-/// <reference path="../Shared/ObjectManager.ts" />
 /// <reference path="ExportSettings.ts" />
 /// <reference path="ExportableColumn.ts" />
 module go {
 	export module kg {
-		export var GridManager: goglobal.ObjectManager = new goglobal.ObjectManager();
+		//export var GridManager: goglobal.ObjectManager = new goglobal.ObjectManager();
 		export class Grid {
 
 			itemsLengthThreshold: number = 100;
@@ -34,7 +32,7 @@ module go {
 			isLoaded: KnockoutObservableBool;
 			isLoadedAndEmpty: KnockoutObservableBool;
 
-			constructor (public id: string, columns: go.kg.Column[], viewHandle: go.ActiveManagement.IViewHandle, 
+			constructor (public id: string, columns: go.kg.Column[], items: KnockoutObservableArray, 
 					public itemCountMessageAll?: string, public itemCountMessagePartial?: string, 
 					public itemAddedToastTitle?: string, public itemRemovedToastTitle?: string, public itemFieldForToastBody?: string,
 					selectable?: bool, exportSettings?: go.kg.ExportSettings, actionsTemplate?: string) {
@@ -44,13 +42,8 @@ module go {
 				this.selectable = go.Argument.boolOrFalse(selectable);
 				this.exportSettings = go.Argument.objectOrDefault(exportSettings, new go.kg.ExportSettings("Report", false));
 				$.each(this.columns(), $.proxy(this.buildExportSettingsIterator, this));
-				this.items = viewHandle.subjects || ko.observableArray([]);
+				this.items = items || ko.observableArray([]);
 				this.items.subscribe(this.itemsChanged, this);
-				viewHandle.status.subscribe(function (newValue) {
-					if (newValue === go.ActiveManagement.ViewStatus.Active) {
-						this.isLoaded(true);
-					}
-				}, this);
 				this.selectedItems = ko.computed(function () {
 					if (!this.selectable) {
 						return [];
@@ -78,7 +71,7 @@ module go {
 				this.isLoaded = ko.observable(false);
 				this.isLoadedAndEmpty = ko.computed(() => this.isLoaded() && this.filteredItems().length === 0 );
 				
-				return go.kg.GridManager.register(this.id, this);
+				//return go.kg.GridManager.register(this.id, this);
 			}
 
 			private getCountText(): string {

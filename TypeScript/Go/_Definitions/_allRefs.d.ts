@@ -9,7 +9,6 @@
 /// <reference path="Scripts/Plugins/knockout.mapping-2.0.d.ts" />
 /// <reference path="Scripts/Plugins/knockout-dynamic-throttle.d.ts" />
 /// <reference path="Scripts/Plugins/knockout-deferred-updates.d.ts" />
-/// <reference path="../_G11n/Resources.d.ts" />
 /// <reference path="Routes.d.ts" />
 
 // This file just collects all external references into a single reference.
