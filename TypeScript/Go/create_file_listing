@@ -1,0 +1,2 @@
+#!/bin/bash
+find `pwd` -name *.ts > file_listing.txt

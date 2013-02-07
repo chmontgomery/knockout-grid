@@ -1,5 +1,4 @@
 /// <reference path="../Shared/NotImplementedError.ts" />
-/// <reference path="../Subjects/SubjectViewModel.ts" />
 /// <reference path="../../_Definitions/_allRefs.d.ts" />
 /// <reference path="ICommand.d.ts" />
 module go.Commands {
@@ -10,14 +9,14 @@ module go.Commands {
 		}
 
 		execute(): void {
-			$.ajax({
+			/*$.ajax({
 				type: "POST",
 				url: this.url,
 				data: $.map(this.filterer(), function (x: go.Subjects.SubjectViewModel) {
 					return "subjects=" + x.getKey();
 				}).join("&"),
 				error: go.Global.HandleAjaxFailure
-			});
+			});*/
 		}
 
 		canExecute(): bool {

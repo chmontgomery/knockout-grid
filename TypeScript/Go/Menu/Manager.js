@@ -47,6 +47,9 @@ var go;
             Manager.clearActiveMenu = clearActiveMenu;
         })(MenuComponent.Manager || (MenuComponent.Manager = {}));
         var Manager = MenuComponent.Manager;
+
     })(go.MenuComponent || (go.MenuComponent = {}));
     var MenuComponent = go.MenuComponent;
+
 })(go || (go = {}));
+

@@ -69,4 +69,6 @@ var go;
         MenuComponent.Group = Group;        
     })(go.MenuComponent || (go.MenuComponent = {}));
     var MenuComponent = go.MenuComponent;
+
 })(go || (go = {}));
+

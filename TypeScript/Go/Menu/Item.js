@@ -26,4 +26,6 @@ var go;
         MenuComponent.Item = Item;        
     })(go.MenuComponent || (go.MenuComponent = {}));
     var MenuComponent = go.MenuComponent;
+
 })(go || (go = {}));
+

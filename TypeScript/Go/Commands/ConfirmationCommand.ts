@@ -12,13 +12,14 @@ module go.Commands {
 			var defaultExecute = this.execute;
 			this.execute = function () {
 				if (this.canExecute()) {
-					go.ui.ShowConfirmationDialog(
+					/*go.ui.ShowConfirmationDialog(
 						this.headerText,
 						this.content(),
 						"Ok",
 						"Cancel",
 						defaultExecute.bind(this)
-					);
+					);*/
+					// show confirmation
 				}
 			};
 		}

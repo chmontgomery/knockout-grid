@@ -1,0 +1,2 @@
+#!/bin/bash
+tsc @TypeScript/Go/file_listing.txt --out Client.js
