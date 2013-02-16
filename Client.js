@@ -591,13 +591,9 @@ var go;
                 }, this);
                 this.actionsTemplate = actionsTemplate;
                 this.filter = ko.observable("");
-                this.filterThrottleTime = ko.computed(function () {
-                    return _this.items().length > _this.itemsLengthThreshold ? 300 : 0;
+                this.filteredItems = ko.computed(function () {
+                    return ko.utils.arrayFilter(_this.items(), $.proxy(_this.filterItem, _this));
                 });
-                this.throttledFilter = this.filter.throttle(this.filterThrottleTime);
-                this.throttledFilter.subscribe(this.filterChange, this);
-                this.filteredItems = ko.onDemandObservable(this.setFilteredItems, this);
-                this.filteredItems(this.items());
                 this.lastSortedColumn = ko.observable();
                 this.lastSortOrder = ko.observable();
                 this.countText = ko.computed(this.getCountText, this);
@@ -712,14 +708,10 @@ var go;
                     this.sortASC(column);
                 }
                 this.lastSortedColumn(column.field);
-                this.filteredItems.refresh();
-                this.unblockUI($.proxy(this.enableAllowFade, this));
             };
             Grid.prototype.sort = function (column) {
                 if(this.filteredItems().length > this.itemsLengthThreshold) {
                     if(column.isSortable) {
-                        this.disableAllowFade();
-                        this.blockUI(this.doSort.bind(this, column));
                     }
                 } else {
                     this.doSort(column);
@@ -799,21 +791,7 @@ var go;
             Grid.prototype.filterItem = function (item) {
                 return this.defaultFilterItem(item);
             };
-            Grid.prototype.filterChange = function (newValue) {
-                this.disableAllowFade();
-                if(this.items().length > this.itemsLengthThreshold) {
-                    this.blockUI(this.filteredItems.refresh);
-                } else {
-                    this.filteredItems.refresh();
-                }
-                if(this.selectable) {
-                    this.unselectAllItems();
-                }
-                this.unblockUI($.proxy(this.enableAllowFade, this));
-                return true;
-            };
             Grid.prototype.itemsChanged = function (value) {
-                this.filteredItems.refresh();
             };
             Grid.prototype.fadeIn = function (element, index, data) {
                 if(element.nodeType === this.trNodeType) {

@@ -1,17 +1,69 @@
 <html>
 <head>
+	<style>
+		table th {
+		    font-weight: bold;
+		    cursor: pointer;
+		    color: #39C;
+		    border: solid 1px black;
+		    background-color: white;
+		}
+		table tr:nth-child(odd) {
+		    background-color: #CCC;
+		}
+		.highlight {
+		    background-color: #ffffcc;
+		}
+	</style>
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
 	<script src="../Client.js"></script>
 </head>
 <body>
 <h1>Hello World!</h1>
+	<p>Row Count: <span data-bind="text: grid.items().length"></span></p>
+	<div id="mygrid" data-bind="template: { name: 'gridTmp', data: grid }"></div>
+
+	<script type="text/html" id="nameColumn">
+	   <span data-bind="text: name"></span>
+	</script>
+	<script type="text/html" id="ageColumn">
+	   <span data-bind="text: age"></span>
+	</script>
+
+	<script type="text/html" id="gridTmp">
+		filter: <input data-bind="value: filter, valueUpdate:'afterkeydown'" />
+	    <table>
+	        <thead>
+	            <tr data-bind="foreach: columns">
+	                <th data-bind="click: $parent.sort.bind($parent, $data), css: { highlight: $parent.lastSortedColumn() === field }">
+	                    <span data-bind="text: headerText"></span>
+	                </th>
+	            </tr>
+	        </thead>
+	        <tbody data-bind="foreach: filteredItems">
+	            <tr>
+	                <!-- ko foreach: $parent.columns -->
+	                <td>
+	                    <span data-bind="template: { name: template, data: $parent }"></span>
+	                </td>
+	                <!-- /ko -->
+	            </tr>
+	        </tbody>
+	    </table>
+	</script>
+
 	<script>
-		var basicGrid = new go.kg.Grid("myExampleGrid",
-			[
-				new go.kg.StringColumn("name", "nameColumn")
-			],
-			[]);
+		var viewModel = {
+			grid: new go.kg.Grid("myExampleGrid",
+				[
+					new go.kg.StringColumn("name", "nameColumn", "Name"),
+					new go.kg.NumberColumn("age", "ageColumn", "Age")
+				],
+				ko.observableArray([{ name: "Chris", age: 26 },{ name: "Jessica", age: 27 }])
+			)
+		}
+		ko.applyBindings(viewModel);
 	</script>
 </body>
 </html>

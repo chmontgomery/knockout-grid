@@ -19,10 +19,10 @@ module go {
 			items: KnockoutObservableArray;
 			actionsTemplate: string;
 			filter: KnockoutObservableString;
-			filterThrottleTime: KnockoutObservableNumber;
-			throttledFilter: KnockoutObservableString;
+			//filterThrottleTime: KnockoutObservableNumber;
+			//throttledFilter: KnockoutObservableString;
 			allowFade: bool = true;
-			filteredItems: KnockoutOnDemandComputed;
+			filteredItems: KnockoutComputed;//KnockoutOnDemandComputed;
 			selectedItems: KnockoutComputed; //TODO KnockoutOnDemandComputed
 			lastSortedColumn: KnockoutObservableString;
 			lastSortOrder: KnockoutObservableString;
@@ -55,11 +55,12 @@ module go {
 				this.actionsTemplate = actionsTemplate;
 
 				this.filter = ko.observable("");
-				this.filterThrottleTime = ko.computed(() => this.items().length > this.itemsLengthThreshold ? 300 : 0);
-				this.throttledFilter = this.filter.throttle(this.filterThrottleTime);
-				this.throttledFilter.subscribe(this.filterChange, this);
-				this.filteredItems = ko.onDemandObservable(this.setFilteredItems, this);
-				this.filteredItems(this.items());
+				//this.filterThrottleTime = ko.computed(() => this.items().length > this.itemsLengthThreshold ? 300 : 0);
+				//this.throttledFilter = this.filter.throttle(this.filterThrottleTime);
+				//this.throttledFilter.subscribe(this.filterChange, this);
+				//this.filteredItems = ko.onDemandObservable(this.setFilteredItems, this);
+				this.filteredItems = ko.computed(() => ko.utils.arrayFilter(this.items(), $.proxy(this.filterItem, this)));
+				//this.filteredItems(this.items());
 
 				this.lastSortedColumn = ko.observable();
 				this.lastSortOrder = ko.observable();
@@ -199,15 +200,15 @@ module go {
 					this.sortASC(column);
 				}
 				this.lastSortedColumn(column.field);
-				this.filteredItems.refresh();
-				this.unblockUI($.proxy(this.enableAllowFade, this));
+				//this.filteredItems.refresh();
+				//this.unblockUI($.proxy(this.enableAllowFade, this));
 			}
 
 			sort(column: go.kg.Column) {
 				if (this.filteredItems().length > this.itemsLengthThreshold) {
 					if (column.isSortable) {
-						this.disableAllowFade();
-						this.blockUI(this.doSort.bind(this, column));
+						//this.disableAllowFade();
+						//this.blockUI(this.doSort.bind(this, column));
 					}
 				} else {
 					this.doSort(column)
@@ -321,14 +322,14 @@ module go {
 				return this.defaultFilterItem(item);
 			}
 
-			filterChange(newValue: string) {
+			/*filterChange(newValue: string) {
 				/// <summary>
 				/// Fires on filter change
 				///</summary>
 				/// <returns type="Boolean">always return true to allow the browser event to bubble up</returns>
 				this.disableAllowFade();
 				if (this.items().length > this.itemsLengthThreshold) {
-					this.blockUI(this.filteredItems.refresh);
+					//this.blockUI(this.filteredItems.refresh);
 				} else {
 					this.filteredItems.refresh();
 				}
@@ -339,17 +340,17 @@ module go {
 					this.unselectAllItems();
 				}
 
-				this.unblockUI($.proxy(this.enableAllowFade, this));
+				//this.unblockUI($.proxy(this.enableAllowFade, this));
 
 				return true; // allow browser event to bubble up
-			}
+			}*/
 			//#endregion
 
 			private itemsChanged(value) {
 				/// <summary>
 				/// refresh the watching filtered items whenever items changes
 				///</summary>
-				this.filteredItems.refresh();
+				//this.filteredItems.refresh();
 			}
 
 			private fadeIn(element: any, index: number, data: any) {
